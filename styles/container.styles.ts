@@ -8,6 +8,7 @@ const Container = styled.div`
   margin-inline: auto;
   margin-top: 66px;
   padding-top: 36px;
+  background-color: white;
 
 
   main{
