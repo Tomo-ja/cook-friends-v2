@@ -1,5 +1,5 @@
 import { Component, ReactNode } from "react";
-import Header from "./Header/index";
+import { Header } from '../components'
 
 class Layout extends Component {
 	render(): ReactNode {

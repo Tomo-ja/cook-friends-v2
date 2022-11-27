@@ -20,13 +20,6 @@ interface props {
 
 }
 
-interface ErrMsg {
-	account: boolean;
-	password: boolean;
-	validation: boolean;
-	login: boolean;
-	loginPsw: boolean;
-}
 interface firdge {
 	user_id: string | undefined;
 	ingredient_api_id: number;
@@ -64,7 +57,7 @@ const ShoopingForm = ({ btn, signUp, userId, setTrigger, setAlert }: props) => {
 	return (
 		<StyledForm>
 			<>
-				<SearchBarSection list={setAddfridge} userid={userId} />
+				<SearchBarSection list={setAddfridge} userId={userId} />
 					<div>
 						<label htmlFor='Password'>Amount</label>
 						<StyledInput id='Amount' type='text' ref={firstInputRef} />

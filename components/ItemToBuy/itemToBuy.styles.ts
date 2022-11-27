@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 const StyledItemToBuy = styled.div`
 	margin: 16px;
 	width: 95%;

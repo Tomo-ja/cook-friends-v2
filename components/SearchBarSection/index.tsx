@@ -1,19 +1,20 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { spoonacularApiAxios } from "../../constants/axiosBase";
-import SearchBarSection from "./searchBarSection.styled";
+import SearchBarSection from "./searchBarSection.styles";
 import SearchBar from "./searchBar.styles";
 import SuggestBox from "./suggestBox.styles"; 
+
 interface props {
 	list?:(value :any)=>void
-	userid?: string | undefined;
+	userId?: string | undefined;
 }
-const SearchSection = ({ list, userid}:props) => {
+
+const SearchSection = ({ list, userId}:props) => {
 
 	const router = useRouter()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [prediction, setPrediction] = useState<{id: number, name: string}[]>([])
-
 
 	const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
 		spoonacularApiAxios
@@ -45,10 +46,10 @@ const SearchSection = ({ list, userid}:props) => {
 
 	const handleSubmit = (ingredient: string, id: number) => {
 		setPrediction([]);
-		if (userid) {
+		if (userId) {
 		inputRef.current!.value = ingredient;
 			return list?.({
-				user_id: userid,
+				user_id: userId,
 				ingredient_api_id: id,
 				name: ingredient,
 			});

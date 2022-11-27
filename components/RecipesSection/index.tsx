@@ -6,10 +6,10 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 import FontAwesomeButton, { IconKind } from "../FontAwesomeButton";
 
+import { StyledImage } from '../../styles'
+import IconButton from "../FontAwesomeButton/iconButton.styles";
 import StyledRecipesSection from "./recipesSection.styles";
 import StyledRecipeItem from "./item.styles";
-import StyledImage from "../../styles/image.styles";
-import IconButton from "../FontAwesomeButton/iconButton.styles";
 
 import { RecipeSearchResult, User } from "../../helpers/typesLibrary";
 import appAxios from "../../constants/axiosBase";

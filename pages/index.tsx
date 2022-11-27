@@ -1,26 +1,18 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import * as cookie from 'cookie'
-
-
 import { useState, useEffect } from "react";
 
-import parseCookies, { popupKeywords, defineExpireDate } from "../helpers";
-
-import SearchKeywordSection from "../components/Home/SearchKeywordSection";
-import HeroSection from "../components/Home/heroSection";
-import RecipesSectionHome from "../components/Home/recipeSection";
+import { Alert } from '../components'
+import { SearchKeywordSection, HeroSection, RecipesSectionHome, StyledHome } from '../components/Home'
+import { StyledMainContent, StyledSubContent} from '../styles'
 
 import StyledSEarchSection from "../components/SearchBarSection/index";
-import StyledMainContent from "../styles/mainContent.styles";
-import StyledSubContent from "../styles/subContent.styles";
-import StyledHome from "../components/Home/home.styles";
 
 import { User, RandomRecipes, RecipeInfo, RecipeMinimize, AlertInfo } from "../helpers/typesLibrary";
 import appAxios, { spoonacularApiAxios } from "../constants/axiosBase";
-
+import { popupKeywords, defineExpireDate } from "../helpers";
 import { randomRecipeData } from "../sampleApiData";
-import Alert from "../components/Alert";
 
 type Props = {
 	user: User | null;
@@ -83,7 +75,7 @@ const Home: NextPage<Props> = ({ user, expireFoods, keywords, randomRecipes, isF
 				)}
 
 			</StyledMainContent>
-			<StyledSubContent>
+			<StyledSubContent isOpen={false}>
 				{expireFoods.length > 0 && (
 					<>
 						<h3>Expiring Ingredients</h3>

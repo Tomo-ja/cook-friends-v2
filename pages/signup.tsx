@@ -1,11 +1,10 @@
 import SignupFrom from "../components/Form/signup";
-
-import Container from "../styles/container.styles";
+import { StyledContainer } from "../styles";
 
 export default function SignIn() {
 	return (
-		<Container>
+		<StyledContainer>
 			<SignupFrom btn={"signup"}/>
-		</Container>
+		</StyledContainer>
 	);
 }

@@ -34,10 +34,7 @@ type Props = {
 	bcColor?: string,
 	width?: string,
 	displayOnlyMobile?: boolean
-
 }
-
-
 
 const FontAwesomeButton = ({ handleClick, target, target2, iconKind, isButtonSquare,iconColor, bcColor, width, displayOnlyMobile }: Props) => {
 	

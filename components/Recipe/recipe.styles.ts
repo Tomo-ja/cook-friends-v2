@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import MainContent from "../../styles/mainContent.styles";
-import Container from "../../styles/container.styles";
+import { StyledMainContent, StyledContainer} from '../../styles'
 
-export const RecipeContainer = styled(Container)`
+export const RecipeContainer = styled(StyledContainer)`
 	justify-content: center;
 `
 
 
-const Recipe = styled(MainContent)`
+const Recipe = styled(StyledMainContent)`
 
 	position: relative;
 

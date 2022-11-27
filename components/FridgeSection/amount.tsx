@@ -1,5 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useRef, useState } from "react";
-
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { classNames } from "./itemInFridge.styles";
 import StyledButton from "../Button/button.styles";

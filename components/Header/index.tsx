@@ -4,9 +4,8 @@ import { getCookie, deleteCookie } from 'cookies-next'
 import Link from 'next/link';
 import Image from 'next/image';
 
-import StyledLink from '../../styles/link.styles';
+import { StyledLink, StyledImage} from '../../styles'
 import StyledHeader from "./header.styles";
-import StyledImage from '../../styles/image.styles';
 
 import logo from "../../public/logo.png"
 import { User } from '../../helpers/typesLibrary';

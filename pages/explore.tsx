@@ -5,18 +5,14 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Head from 'next/head'
 
-import SearchSection from '../components/SearchBarSection/index'
+import { SearchBarSection, Alert} from '../components'
+import { StyledExplore, StyledPagination} from '../components/Explore'
+import { StyledMainContent, StyledSubContent} from '../styles'
 
-import StyledExplore from '../components/Explore/explore.styles'
-import StyledMainContent from '../styles/mainContent.styles'
-import StyledSubContent from '../styles/subContent.styles'
-import StyledPagination from '../components/Explore/pagination.styles';
-
-import { stringToDate } from '../helpers'
 import { User, Fridge, RecipeSearchResult, RecipeSearchParams, RecipeInfo, RecipeMinimize, AlertInfo, } from '../helpers/typesLibrary'
+import { stringToDate } from '../helpers'
 import appAxios, { spoonacularApiAxios } from '../constants/axiosBase';
 import { complexSearchData } from '../sampleApiData'
-import Alert from '../components/Alert';
 
 const NUMBER_ITEMS_AT_ONE_FETCH = 3
 
@@ -163,7 +159,7 @@ const Explore: NextPage<Props> = ({ user, fridge, recipeSearchResult, searchPara
         <title>Recipes | Cookit</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SearchSection />
+      <SearchBarSection />
       <StyledMainContent>
         {recipeIds ? 
           <></> : 
@@ -183,7 +179,7 @@ const Explore: NextPage<Props> = ({ user, fridge, recipeSearchResult, searchPara
           }
         </StyledPagination>
       </StyledMainContent>
-      <StyledSubContent>
+      <StyledSubContent isOpen={false}>
         <h3>Use Food in Your Fridge?</h3>
         <DynamicFridgeSection 
           fridge={fridge} 

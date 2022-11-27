@@ -1,19 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NextPageContext } from "next";
 import { parseCookies} from "nookies";
-import { Timestamp } from "mongodb";
-import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton";
-import ItemToBuy from "../components/ItemToBuy/ItemToBuy";
 
-import StyledContainer from "../styles/container.styles";
-import StyledMainContent from "../styles/mainContent.styles";
-import StyledSubContent from "../styles/subContent.styles";
+import { ItemToBuy, Alert } from '../components'
+import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton";
+import ShoopingForm from "../components/Form/shopping";
+import { StyledContainer, StyledMainContent, StyledSubContent} from '../styles'
 
 import appAxios from "../constants/axiosBase";
 import { AlertInfo, ItemOnList, User } from "../helpers/typesLibrary";
 import ContextShopping, { shoppingContext } from "../useContext/useShoppingList";
-import ShoopingForm from "../components/Form/shopping";
-import Alert from "../components/Alert";
 
 type Props = {
 	user: User
@@ -48,14 +44,13 @@ export default function ShoppingList( { user }: Props ) {
 	return (
 		<ContextShopping>
 			<StyledContainer>
-				<StyledSubContent className={switchModal ? "open" : ""}>
+				<StyledSubContent isOpen={switchModal} >
 					<FontAwesomeButton
 						handleClick={handleSwitch}
 						target={null}
 						iconKind={IconKind.XMark}
 						displayOnlyMobile={true}
 						isButtonSquare={true}
-						iconColor='white'
 						bcColor='black'
 					/>
 					<ShoopingForm btn={"shopping"} signUp={false} userId={user.id} setAlert={setAlert} />
