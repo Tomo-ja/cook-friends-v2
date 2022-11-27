@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Container from "../../styles/container.styles";
+import { StyledContainer } from '../../styles'
 
-const Explore = styled(Container)`
+const Explore = styled(StyledContainer)`
 	main{
 		display: flex;
 		flex-wrap: wrap;

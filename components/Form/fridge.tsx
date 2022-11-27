@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import StyledInput from "../Input/input.styles";
 import StyledButton from "../Button/button.styles";
 import StyledForm from "./form.styles";
 
 import appAxios from "../../constants/axiosBase";
-import { spoonacularApiAxios } from "../../constants/axiosBase";
 import SearchBarSection from "../SearchBarSection/index";
 import { AlertInfo } from "../../helpers/typesLibrary";
 

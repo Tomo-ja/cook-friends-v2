@@ -2,8 +2,9 @@ import styled from 'styled-components'
 
 
 const MainContent = styled.main`
-
+  width: max(66%, 400px);
 	color: #151413;
+  transition: width 0.5s ease;
 
 	h2{
 		margin: 0;
@@ -29,6 +30,7 @@ const MainContent = styled.main`
 	 }
 
   @media only screen and (max-width: 768px)  {
+			width: 100%;
       h2{
 				font-size: 20px;
 				margin-bottom: 24px;

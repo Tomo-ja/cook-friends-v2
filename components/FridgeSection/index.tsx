@@ -5,7 +5,7 @@ import { ParsedUrlQuery } from "querystring";
 import Amount from "./amount";
 
 import StyledItemInFridge, {classNames} from "./itemInFridge.styles";
-import StyledLink from "../../styles/link.styles";
+import { StyledLink } from '../../styles'
 
 import { defineExpireDate } from "../../helpers";
 import { AlertInfo, Fridge } from "../../helpers/typesLibrary";

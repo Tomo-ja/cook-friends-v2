@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useContext, useEffect } from "react";
 
 import FontAwesomeButton, { IconKind } from "../FontAwesomeButton";
 
-import StyledItemToBuy from "../ItemToBuy/itemToBuy.styles";
+import StyledItemToBuy from "./itemToBuy.styles";
 
 import { AlertInfo, ItemOnList } from "../../helpers/typesLibrary";
 import appAxios from "../../constants/axiosBase";

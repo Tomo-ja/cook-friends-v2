@@ -1,19 +1,15 @@
-import { GetServerSideProps, InferGetServerSidePropsType, NextPageContext } from "next";
-import { useContext, useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
+import { useEffect, useState } from "react";
 import * as cookie from 'cookie'
 
-import FridgeSection from "../components/FridgeSection";
+import { FridgeSection, Alert} from '../components'
 import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton";
-
-import StyledContainer from "../styles/container.styles";
-import StyledMainContent from "../styles/mainContent.styles";
-import StyledSubContent from "../styles/subContent.styles";
-
-import appAxios from "../constants/axiosBase";
-import { stringToDate } from "../helpers";
-import { Fridge, User, AlertInfo } from "../helpers/typesLibrary";
 import FridgeForm from "../components/Form/fridge";
-import Alert from "../components/Alert";
+import { StyledContainer, StyledMainContent, StyledSubContent } from '../styles'
+
+import { Fridge, User, AlertInfo } from "../helpers/typesLibrary";
+import { stringToDate } from "../helpers";
+import appAxios from "../constants/axiosBase";
 
 type Props = {
 	user: User,
@@ -57,14 +53,13 @@ const FridgeList = ({ user }: Props) => {
 
 	return (
 		<StyledContainer>
-			<StyledSubContent className={switchModal ? "open" : ""}>
+			<StyledSubContent isOpen={switchModal}>
 				<FontAwesomeButton
 					handleClick={handleSwitch}
 					target={null}
 					iconKind={IconKind.XMark}
 					displayOnlyMobile={true}
 					isButtonSquare={true}
-					iconColor='white'
 					bcColor='black'
 				/>
 				<FridgeForm btn='fridge'

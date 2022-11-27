@@ -1,0 +1,8 @@
+export { default as IngredientSection } from './IngredientSection'
+export { default as HowToSection } from './HowtoSection'
+export { default as AddListModal } from './AddListModal'
+export { default as ReduceFridgeModal } from './ReduceFridgeModal'
+export { default as FeedbackSection } from './FeedbackSection'
+export { default as StyledTagSection } from './tagSection.styles'
+export { default as StyledRecipe } from './recipe.styles'
+export { RecipeContainer } from './recipe.styles'
