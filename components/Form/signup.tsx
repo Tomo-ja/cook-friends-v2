@@ -1,14 +1,10 @@
-import { Dispatch, SetStateAction, useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { parseCookies, setCookie } from "nookies";
-import StyledInput from "../Input/input.styles";
-import StyledButton from "../Button/button.styles";
+import StyledInput from "../../styles/input.styles";
+import StyledButton from "../../styles/button.styles";
 import StyledForm from "./form.styles";
 
-
 import appAxios from "../../constants/axiosBase";
-
-
 
 interface props {
 	btn: string;

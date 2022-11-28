@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Input from "../Input/input.styles";
+import Input from "../../styles/input.styles";
 
 const RecipeInput = styled(Input)`
 	width: 100px;

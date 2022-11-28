@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Button from "../Button/button.styles";
+import Button from "../../styles/button.styles";
 
 const RecipeButton = styled(Button)`
 

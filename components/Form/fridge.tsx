@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import StyledInput from "../Input/input.styles";
-import StyledButton from "../Button/button.styles";
+import StyledInput from "../../styles/input.styles";
+import StyledButton from "../../styles/button.styles";
 import StyledForm from "./form.styles";
 
 import appAxios from "../../constants/axiosBase";
@@ -60,7 +60,7 @@ const FridgeForm = ({ btn, userId, setTrigger, setAlert }: props) => {
 	return (
 		<StyledForm>
 			<>
-				<SearchBarSection list={setAddfridge} userid={userId} />
+				<SearchBarSection list={setAddfridge} userId={userId} />
 				<div>
 					<label htmlFor='Amount'>Amount</label>
 					<StyledInput id='Amount' type='number' ref={firstInputRef} />

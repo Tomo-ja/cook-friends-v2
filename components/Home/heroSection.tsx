@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 import StyledSlideItem, { classNames } from "./heroSection.styles";
-import StyledButton from '../Button/button.styles';
+import StyledButton from '../../styles/button.styles';
 
 import { RecipeMinimize } from "../../helpers/typesLibrary";
 

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import StyledFeedbackSection from "./feedbackSection.styles";
-import StyledButton from "../Button/button.styles";
+import StyledButton from "../../styles/button.styles";
 
 import { AlertInfo, User } from "../../helpers/typesLibrary";
 import appAxios from "../../constants/axiosBase";

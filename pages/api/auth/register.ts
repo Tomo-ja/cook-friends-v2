@@ -21,7 +21,7 @@ export default async function register(
 			password: hashPsw,
 		};
 		const checkEmail = await User.findOne({ email: req.body.data.email });
-		if (checkEmail) return res.json("exsist");
+		if (checkEmail) return res.json("exist");
 		const auth = await User.create(newUser);
 		
 		res.json(auth);

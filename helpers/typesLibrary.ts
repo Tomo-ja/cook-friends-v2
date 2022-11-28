@@ -93,3 +93,11 @@ export type AlertInfo = {
 	isError: boolean, 
 	message: string
 }
+
+export type ErrorsForFormAt = {
+	account: boolean,
+	password: boolean,
+	validation: boolean,
+	login: boolean,
+	loginPassword: boolean
+}
