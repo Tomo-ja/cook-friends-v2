@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Button from "../Button/button.styles";
+import { StyledButton } from '../../styles'
 
-const RecipeButton = styled(Button)`
+const RecipeButton = styled(StyledButton)`
 
 	width: 25%;
 	font-size: 13px;

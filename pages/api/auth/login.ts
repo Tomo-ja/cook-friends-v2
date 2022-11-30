@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import connectMongo from "../../../utils/connectMongo";
 import User from "../../../models/user";
 const bcrypt = require("bcrypt");
-import { ObjectId } from "mongodb";
 
 export default async function login(
 	req: NextApiRequest,
@@ -16,7 +15,7 @@ export default async function login(
 			req.body.data.password,
 			user.password
 		);
-		if (!isUserMatch) return res.json("worngPassword");
+		if (!isUserMatch) return res.json("wrongPassword");
 		return res.json({
 			id: user._id.toString(),
 			username: user.username,

@@ -5,7 +5,7 @@ interface ILink {
 	hoverColor?: string
 }
 
-const CustomLink = styled.a<ILink>`
+const StyledLink = styled.a<ILink>`
 	padding-block: 5px;
 	color: inherit;
   cursor: pointer;
@@ -17,7 +17,12 @@ const CustomLink = styled.a<ILink>`
 		opacity: ${props => props.hoverColor ? 1 : 0.6};
 		border-bottom-color: ${props => props.animeBorder ? 'black' : 'transparent'};
 	}
+
+	&.sign-up {
+		display: inline-block;
+		margin-left: 5px;
+	}
 `
 
-export default CustomLink
+export default StyledLink
 
