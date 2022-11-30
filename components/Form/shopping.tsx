@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useContext, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import StyledInput from "../../styles/input.styles";
-import StyledButton from "../../styles/button.styles";
-import StyledForm from "./form.styles";
+
+import { StyledInput, StyledButton, StyledForm} from '../../styles'
+
 import appAxios from "../../constants/axiosBase";
 import { shoppingContext } from "../../useContext/useShoppingList";
 import SearchBarSection from "../SearchBarSection/index";
