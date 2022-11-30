@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
-import { StyledInput, StyledButton, StyledForm} from '../../styles'
+import { StyledInput, StyledForm} from '../../styles'
+import StyledFormButton from "./button";
 
 import appAxios from "../../constants/axiosBase";
 import SearchBarSection from "../SearchBarSection/index";
@@ -69,14 +70,11 @@ const FridgeForm = ({ btn, userId, setTrigger, setAlert }: props) => {
 					<StyledInput id='cPassword' type='date' defaultValue={today} ref={secondInputRef} />
 				</div>
 			</>
-			<StyledButton
-				width='300px'
-				fontSize='14px'
-				fontThin={true}
+			<StyledFormButton
 				onClick={connectApi}
 			>
 				{btn}
-			</StyledButton>
+			</StyledFormButton>
 		</StyledForm>
 	);
 };

@@ -93,19 +93,3 @@ export type AlertInfo = {
 	isError: boolean, 
 	message: string
 }
-
-export type ErrorsForSignUpFormAt = {
-	nameField: boolean,
-	emailField: boolean,
-	passwordField: boolean,
-	account: boolean,
-	password: boolean,
-	validation: boolean,
-}
-
-export type ErrorsForLoginFormAt = {
-	emailField: boolean,
-	passwordField: boolean,
-	account: boolean,
-	password: boolean,
-}

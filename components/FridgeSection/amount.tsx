@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
 import { classNames } from "./itemInFridge.styles";
-import StyledButton from "../../styles/button.styles";
+import { StyledButton } from '../../styles'
 
 import appAxios from "../../constants/axiosBase";
 import FontAwesomeButton, { IconKind } from "../FontAwesomeButton";

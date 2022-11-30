@@ -17,6 +17,11 @@ const StyledForm = styled.form`
 		}
 	}
 
+	.guide-for-sign-up {
+		text-align: center;
+		margin-top: 10px;
+	}
+
 	label {
 		text-align: left;
 		padding-bottom: 8px;

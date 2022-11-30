@@ -7,7 +7,7 @@ interface IButton {
 	backgroundColor?: string
 }
 
-const Button = styled.button<IButton>`
+const StyledButton = styled.button<IButton>`
 	all: unset;
 	display: block;
 	width: ${props => props.width ? props.width : '100%'};
@@ -51,4 +51,4 @@ const Button = styled.button<IButton>`
 `
 
 
-export default Button
+export default StyledButton

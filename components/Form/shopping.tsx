@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useContext, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
-import { StyledInput, StyledButton, StyledForm} from '../../styles'
+import { StyledInput, StyledForm } from '../../styles'
+import StyledFormButton from "./button";
 
 import appAxios from "../../constants/axiosBase";
 import { shoppingContext } from "../../useContext/useShoppingList";
@@ -67,14 +68,9 @@ const ShoopingForm = ({ btn, signUp, userId, setTrigger, setAlert }: props) => {
 						<StyledInput id='memo' type='text' ref={secondInputRef} />
 					</div>
 				</>
-			<StyledButton
-				width='300px'
-				fontSize='14px'
-				fontThin={true}
-				onClick={connectApi}
-			>
+			<StyledFormButton onClick={connectApi} >
 				{btn}
-			</StyledButton>
+			</StyledFormButton>
 		</StyledForm>
 	);
 };
