@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NextPageContext } from "next";
-import { parseCookies} from "nookies";
+import { GetServerSideProps } from "next";
 
 import { ItemToBuy, Alert } from '../components'
 import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton";
-import ShoopingForm from "../components/Form/shopping";
+import FormInShoppingList from "../components/Form/FormInShoppingList";
 import { StyledContainer, StyledMainContent, StyledSubContent} from '../styles'
 
 import appAxios from "../constants/axiosBase";
 import { AlertInfo, ItemOnList, User } from "../helpers/typesLibrary";
 import ContextShopping, { shoppingContext } from "../useContext/useShoppingList";
 
+import { getUserFromCookie } from '../helpers/functions'
+
 type Props = {
 	user: User
 }
-
 
 export default function ShoppingList( { user }: Props ) {
 
@@ -53,7 +53,7 @@ export default function ShoppingList( { user }: Props ) {
 						isButtonSquare={true}
 						bcColor='black'
 					/>
-					<ShoopingForm btn={"shopping"} signUp={false} userId={user.id} setAlert={setAlert} />
+					<FormInShoppingList userId={user.id} setAlert={setAlert} />
 				</StyledSubContent>
 				<StyledMainContent>
 					<ItemToBuy list={shoppingList} userId={user.id} setAlert={setAlert}/>
@@ -71,12 +71,13 @@ export default function ShoppingList( { user }: Props ) {
 		</ContextShopping>
 	);
 }
-export async function getServerSideProps(ctx?: NextPageContext) {
-	const cookie = parseCookies(ctx);
-	const cookieData: User = JSON.parse(cookie.user);
-	return {
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+	const user: User = getUserFromCookie(req.headers.cookie!)
+
+	return { 
 		props: {
-			user: cookieData
-		},
-	};
+			user,
+		}
+	}
 }

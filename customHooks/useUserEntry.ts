@@ -10,7 +10,6 @@ const useUserEntry = () => {
 	const [alert, setAlert] = useState<AlertInfo | null>(null)
 	const router = useRouter();
 
-
 	const isRequiredInfoFilled = (email: string, password: string, ...signIn: string[]): boolean => {
 		if (email.trim() === '') {
 			setAlert({isError: true, message: 'Email is Required'})

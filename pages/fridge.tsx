@@ -1,15 +1,17 @@
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
-import * as cookie from 'cookie'
 
 import { FridgeSection, Alert} from '../components'
 import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton";
-import FridgeForm from "../components/Form/fridge";
+import FridgeForm from "../components/Form/FormInFridge";
 import { StyledContainer, StyledMainContent, StyledSubContent } from '../styles'
 
 import { Fridge, User, AlertInfo } from "../helpers/typesLibrary";
 import { stringToDate } from "../helpers";
 import appAxios from "../constants/axiosBase";
+
+import { getUserFromCookie } from '../helpers/functions'
+
 
 type Props = {
 	user: User,
@@ -62,9 +64,8 @@ const FridgeList = ({ user }: Props) => {
 					isButtonSquare={true}
 					bcColor='black'
 				/>
-				<FridgeForm btn='fridge'
+				<FridgeForm
 					userId={user.id}
-					modal={switchModal}
 					setTrigger={setFridgeUpdateTrigger}
 					setAlert={setAlert}
 				/>
@@ -94,8 +95,7 @@ const FridgeList = ({ user }: Props) => {
 export default FridgeList
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-	const cookieData = cookie.parse(req.headers.cookie!)
-	const user: User = JSON.parse(cookieData.user)
+	const user: User = getUserFromCookie(req.headers.cookie!)
 
 	return { 
 		props: {

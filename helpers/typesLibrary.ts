@@ -16,6 +16,12 @@ export type Ingredient = {
 	unit: string
 }
 
+export type Food = {
+	user_id: string | undefined;
+	ingredient_api_id: number;
+	name: string;
+}
+
 export type ItemOnList = {
 	ingredient_api_id: string;
 	name: string;
@@ -48,8 +54,6 @@ export type RecipeSearchParams = {
 	sort: string,
 	includeIngredients: string
 }
-
-
 
 export type RecipeInstruction = {
 	number: number,

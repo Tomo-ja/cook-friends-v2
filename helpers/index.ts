@@ -1,5 +1,3 @@
-import cookie from 'cookie'
-
 const keywords = [
 	'Japanese',
 	'Chinese',
@@ -12,9 +10,6 @@ const keywords = [
 	'Salad', 
 ]
 
-const parseCookies = (req: any) => {
-	return cookie.parse(req ? req.headers.cookie || "": document.cookie)
-}
 
 export const stringToDate = (dateish: string): Date => {
 	const date = new Date(dateish)
@@ -33,6 +28,3 @@ export const defineExpireDate = (dayBought: string): number => {
 export const popupKeywords = (): string[] => {
 	return keywords
 }
-
-
-export default parseCookies
