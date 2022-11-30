@@ -10,7 +10,7 @@ import { StyledExplore, StyledPagination} from '../components/Explore'
 import { StyledMainContent, StyledSubContent} from '../styles'
 
 import { User, Fridge, RecipeSearchResult, RecipeSearchParams, RecipeInfo, RecipeMinimize, AlertInfo, } from '../helpers/typesLibrary'
-import { stringToDate } from '../helpers'
+import { stringToDate } from '../helpers/functions'
 import appAxios, { spoonacularApiAxios } from '../constants/axiosBase';
 import { complexSearchData } from '../sampleApiData'
 

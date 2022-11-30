@@ -1,7 +1,6 @@
 import React, { Dispatch, useState, SetStateAction, RefObject } from "react";
 
 import appAxios from "../constants/axiosBase";
-import { getFormattedTodaysDateInString } from "../helpers/functions";
 import { AlertInfo, Food } from "../helpers/typesLibrary";
 
 export enum FormFor {

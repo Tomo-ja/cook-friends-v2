@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
+import React, { useContext, useEffect, useState } from "react"
+import { GetServerSideProps } from "next"
 
 import { ItemToBuy, Alert } from '../components'
-import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton";
-import FormInShoppingList from "../components/Form/FormInShoppingList";
+import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton"
+import FormInShoppingList from "../components/Form/FormInShoppingList"
 import { StyledContainer, StyledMainContent, StyledSubContent} from '../styles'
 
-import appAxios from "../constants/axiosBase";
-import { AlertInfo, ItemOnList, User } from "../helpers/typesLibrary";
-import ContextShopping, { shoppingContext } from "../useContext/useShoppingList";
+import appAxios from "../constants/axiosBase"
+import { AlertInfo, ItemOnList, User } from "../helpers/typesLibrary"
+import ContextShopping, { shoppingContext } from "../useContext/useShoppingList"
 
 import { getUserFromCookie } from '../helpers/functions'
 
@@ -18,28 +18,24 @@ type Props = {
 
 export default function ShoppingList( { user }: Props ) {
 
-	const context = useContext(shoppingContext);
-	const [shoppingList, setShoppingList] = useState<ItemOnList[]>([]);
-	const [switchModal, setSwitchModal] = useState<boolean>(false);
+	const context = useContext(shoppingContext)
+	const [shoppingList, setShoppingList] = useState<ItemOnList[]>([])
+	const [switchModal, setSwitchModal] = useState<boolean>(false)
 	const [alert, setAlert] = useState<AlertInfo | null>(null)
 
+	const handleSwitch = () => {
+		setSwitchModal(!switchModal)
+	}
 
 	useEffect(() => {
 		const fetchShoppingList = async () => {
-			await appAxios
-				.post("/api/shoppingList/show", {
-					user_id: user.id,
-				})
-				.then((res) => {
-					setShoppingList(res.data.shoppingList.list);
-				});
-		};
-		fetchShoppingList();
-	}, [context?.shoppingList]);
-
-	const handleSwitch = () => {
-		setSwitchModal(!switchModal);
-	};
+			const data = await appAxios.post("/api/shoppingList/show", {
+				user_id: user.id,
+			})
+			setShoppingList(data.data.shoppingList.list)
+		}
+		fetchShoppingList()
+	}, [context?.shoppingList])
 
 	return (
 		<ContextShopping>
@@ -62,6 +58,7 @@ export default function ShoppingList( { user }: Props ) {
 					handleClick={handleSwitch}
 					target={null}
 					iconKind={IconKind.Plus}
+					isButtonSquare={true}
 					displayOnlyMobile={true}
 				/>
 				{alert && 
@@ -69,7 +66,7 @@ export default function ShoppingList( { user }: Props ) {
 				}
 			</StyledContainer>
 		</ContextShopping>
-	);
+	)
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {

@@ -11,7 +11,7 @@ import { SearchBarSection } from "../components/";
 
 import { User, RandomRecipes, RecipeInfo, RecipeMinimize, AlertInfo } from "../helpers/typesLibrary";
 import appAxios, { spoonacularApiAxios } from "../constants/axiosBase";
-import { popupKeywords, defineExpireDate } from "../helpers";
+import { popupKeywords, defineExpireDate } from "../helpers/functions";
 import { randomRecipeData } from "../sampleApiData";
 
 type Props = {

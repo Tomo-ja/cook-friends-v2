@@ -7,7 +7,7 @@ import Amount from "./amount";
 import StyledItemInFridge, {classNames} from "./itemInFridge.styles";
 import { StyledLink } from '../../styles'
 
-import { defineExpireDate } from "../../helpers";
+import { defineExpireDate } from "../../helpers/functions";
 import { AlertInfo, Fridge } from "../../helpers/typesLibrary";
 
 type Props = {

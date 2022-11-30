@@ -9,7 +9,7 @@ import { IngredientSection, HowToSection, AddListModal, ReduceFridgeModal, Feedb
 import FontAwesomeButton, { IconKind } from '../../components/FontAwesomeButton';
 import { StyledImage } from '../../styles'
 
-import { stringToDate } from '../../helpers/index'
+import { stringToDate } from '../../helpers/functions'
 import { User, RecipeInfo, Fridge, Ingredient, AlertInfo } from '../../helpers/typesLibrary'
 import appAxios, { spoonacularApiAxios } from '../../constants/axiosBase'
 import { recipeDetailsData } from '../../sampleApiData';
