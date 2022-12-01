@@ -13,6 +13,16 @@ const keywords = [
 	'Salad', 
 ]
 
+export const getPageNameFromUrl = (url: string): string => {
+	const urlX = url.slice(1, url.length)
+	if (urlX.length === 0 ){
+		return "Home"
+	}
+	let title: string = urlX.split('?')[0]
+	title = title.split('/')[0]
+	return title.charAt(0).toUpperCase() + title.slice(1)
+}
+
 export const popupKeywords = (): string[] => {
 	return keywords
 }

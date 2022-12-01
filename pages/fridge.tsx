@@ -34,7 +34,7 @@ const FridgeList = ({ user }: Props) => {
 			const data = await appAxios.post('/api/fridge/show', {
 				user_id: user.id
 			})
-			const fridge: Fridge = convertFetchDataToFridgeType(data)
+			const fridge: Fridge = convertFetchDataToFridgeType(data.data)
 			setDisplayedFridge(fridge)
 		}
 
