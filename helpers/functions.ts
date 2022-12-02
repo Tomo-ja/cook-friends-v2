@@ -84,3 +84,11 @@ export const getExpiringFood = (fetchData: any): string[] => {
 	})
 	return expiringFood
 }
+
+export const initFilter = (length: number): boolean[] => {
+	const init: boolean[] = []
+	for (let i=0; i<length; i++){
+		init.push(false)
+	}
+	return init
+}

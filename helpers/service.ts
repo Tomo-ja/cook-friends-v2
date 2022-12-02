@@ -17,3 +17,14 @@ export const getRecipesByIdsSimultaneously = async (recipeIds: string[] | number
 	}
 }
 
+export const getIngredientsAutoComplete = async (keyword: string) => {
+	const response = await spoonacularApiAxios.get("/food/ingredients/autocomplete", {
+		params: {
+			number: 10,
+			query: keyword,
+			metaInformation: true
+		}
+	})
+	const words: {id: number, name: string}[] = response.data
+	return words
+}

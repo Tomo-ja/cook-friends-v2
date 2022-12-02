@@ -4,8 +4,6 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-import FontAwesomeButton, { IconKind } from "../FontAwesomeButton";
-
 import { StyledImage } from '../../styles'
 import IconButton from "../FontAwesomeButton/iconButton.styles";
 import StyledRecipesSection from "./recipesSection.styles";
@@ -85,14 +83,6 @@ const RecipeSection = ({ recipesSearchResult, user, handleClickRecipe }: Props) 
 			{recipesSearchResult.results.map((recipe, idx) => (
 				<StyledRecipeItem key={recipe.id}>
 					{user && 
-						// <FontAwesomeButton
-						// 	handleClick={handleFavButton}
-						// 	target={recipe.id}
-						// 	target2={idx}
-						// 	iconKind={IconKind.Star}
-						// 	bcColor={isFavRecipe[idx] ? 'white': '#c4c4c4'}
-						// 	iconColor={isFavRecipe[idx] ? '#ffaa4e': 'white'}
-						// />
 						<IconButton backgroundColor={isFavRecipe[idx] ? 'white': '#c4c4c4'} onClick={() => handleFavButton(recipe.id, idx)}>
 							<FontAwesomeIcon icon={faStar} color={isFavRecipe[idx] ? '#ffaa4e': 'white'} style={{width: '16px', height: '16px'}}/>
 						</IconButton>

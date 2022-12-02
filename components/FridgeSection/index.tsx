@@ -7,7 +7,7 @@ import Amount from "./amount";
 import StyledItemInFridge, {classNames} from "./itemInFridge.styles";
 import { StyledLink } from '../../styles'
 
-import { defineExpireDate } from "../../helpers/functions";
+import { defineExpireDate, initFilter } from "../../helpers/functions";
 import { AlertInfo, Fridge } from "../../helpers/typesLibrary";
 import { LimitationActionType } from "../../customHooks/useLimitedRecipesList";
 
@@ -21,15 +21,6 @@ type Props = {
 	setAlert?: Dispatch<SetStateAction<AlertInfo | null>>,
 
 }
-
-const initFilter = (length: number): boolean[] => {
-	const init: boolean[] = []
-	for (let i=0; i<length; i++){
-		init.push(false)
-	}
-	return init
-}
-
 
 const FridgeSection = ({ fridge, useAsFilter, handleIngredientLimitation , urlQuery, userId, setTrigger, setAlert }: Props) => {
 
