@@ -9,13 +9,14 @@ import { StyledLink } from '../../styles'
 
 import { defineExpireDate } from "../../helpers/functions";
 import { AlertInfo, Fridge } from "../../helpers/typesLibrary";
+import { LimitationActionType } from "../../customHooks/useLimitedRecipesList";
 
 type Props = {
 	setTrigger?: Dispatch<SetStateAction<number>>,
 	useAsFilter: boolean,
 	fridge?: Fridge,
 	urlQuery?: ParsedUrlQuery,
-	setMustIncludeIngredients?: Dispatch<SetStateAction<string[]>>,
+	handleIngredientLimitation?: (targetFood: string, actionType: LimitationActionType) => void,
 	userId?: string,
 	setAlert?: Dispatch<SetStateAction<AlertInfo | null>>,
 
@@ -30,7 +31,7 @@ const initFilter = (length: number): boolean[] => {
 }
 
 
-const FridgeSection = ({ fridge, useAsFilter, setMustIncludeIngredients , urlQuery, userId, setTrigger, setAlert }: Props) => {
+const FridgeSection = ({ fridge, useAsFilter, handleIngredientLimitation , urlQuery, userId, setTrigger, setAlert }: Props) => {
 
 	const router = useRouter()
 
@@ -58,11 +59,11 @@ const FridgeSection = ({ fridge, useAsFilter, setMustIncludeIngredients , urlQue
 				changing[idx] = !prev[idx]
 				return changing
 			})
-			if(setMustIncludeIngredients){
+			if(handleIngredientLimitation){
 				if (isFilterOut) {
-					setMustIncludeIngredients(prev => [...prev].filter(food => food !== fridge[idx].name))
+					handleIngredientLimitation(fridge[idx].name, LimitationActionType.Remove)
 				} else {
-					setMustIncludeIngredients(prev => [...prev, fridge[idx].name])
+					handleIngredientLimitation(fridge[idx].name, LimitationActionType.Add)
 				}
 			}
 		}

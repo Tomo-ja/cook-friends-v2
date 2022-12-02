@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie, deleteCookie } from 'cookies-next'
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -10,7 +8,6 @@ import StyledHeader from "./header.styles";
 import useLogInOut from '../../customHooks/useLogInOut';
 
 import logo from "../../public/logo.png"
-import { User } from '../../helpers/typesLibrary';
 import { getPageNameFromUrl } from '../../helpers/functions'
 
 const Header = () => {

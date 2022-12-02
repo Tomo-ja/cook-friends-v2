@@ -1,6 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import { useState, useEffect } from 'react';
-import * as cookie from 'cookie'
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Head from 'next/head'
@@ -9,8 +8,10 @@ import { SearchBarSection, Alert} from '../components'
 import { StyledExplore, StyledPagination} from '../components/Explore'
 import { StyledMainContent, StyledSubContent} from '../styles'
 
+import useLimitedRecipesList from '../customHooks/useLimitedRecipesList';
+
 import { User, Fridge, RecipeSearchResult, RecipeSearchParams, RecipeInfo, RecipeMinimize, AlertInfo, } from '../helpers/typesLibrary'
-import { stringToDate } from '../helpers/functions'
+import { stringToDate, getUserFromCookie } from '../helpers/functions'
 import appAxios, { spoonacularApiAxios } from '../constants/axiosBase';
 import { complexSearchData } from '../sampleApiData'
 
@@ -19,7 +20,7 @@ const NUMBER_ITEMS_AT_ONE_FETCH = 3
 type Props = {
   user: User | null,
   fridge: Fridge,
-  recipeSearchResult: RecipeSearchResult,
+  initSearchResult: RecipeSearchResult,
   searchParams: RecipeSearchParams | null,
   recipeIds: number[] | null,
   isFakeData: AlertInfo | null
@@ -33,125 +34,19 @@ const DynamicRecipeSection = dynamic(() => import('../components/RecipesSection/
 
 let isInitialRender = true
 
-const Explore: NextPage<Props> = ({ user, fridge, recipeSearchResult, searchParams, recipeIds, isFakeData }: Props) => {
+const Explore: NextPage<Props> = ({ user, fridge, initSearchResult, searchParams, recipeIds, isFakeData }: Props) => {
   const router = useRouter()
 
-  const [stateRecipesResult, setStateResult] = useState(recipeSearchResult)
-  const [mustIncludeIngredients, setMustIncludeIngredients] = useState<string[]>([])
-  const [page, setPage] = useState(1)
+  const { handlePagination, getRecipesForDisplay, initPagination, handleIngredientLimitation, page } = useLimitedRecipesList({initSearchResult, fetchLimitation: NUMBER_ITEMS_AT_ONE_FETCH, searchParams, recipeIds })
   const [alert, setAlert] = useState<AlertInfo | null>(isFakeData)
-
-  const handlePagination = (nextPage: number) => {
-    setPage(prev => prev + nextPage)
-  }
-
-  const pickDisplayItems = (propPage: number, totalResults: number): RecipeSearchResult => {
-    const allRecipes = [...stateRecipesResult.results]
-    const start = Math.max(((propPage - 1 ) * NUMBER_ITEMS_AT_ONE_FETCH), 0)
-    let end = propPage * NUMBER_ITEMS_AT_ONE_FETCH
-    if (end > totalResults) {
-      end = totalResults
-    } 
-    const displayRecipe = allRecipes.slice(start, end)
-    return {
-      ...stateRecipesResult,
-      results: displayRecipe
-    }
-  }
 
   const handleClickRecipe = (id: number) => {
     router.push(`/recipe/${id}`)
   }
 
   useEffect(() => {
-    const fetchSearchResult = async (offset: number) => {
-      if (searchParams) {
-        searchParams.offset = offset
-        try {
-          const response = await spoonacularApiAxios.get('/recipes/complexSearch', {params: searchParams})
-          setStateResult(prev => {
-            const newState = {...prev}
-            newState.offset = offset
-            newState.results.push(...response.data.results)
-            newState.number = response.data.number
-            return newState
-          })
-        } catch {
-          console.error('fake recipes at explore when pages change')
-          const response = complexSearchData
-          setStateResult(prev => {
-            const newState = {...prev}
-            newState.offset = offset
-            newState.results.push(...response.data.results)
-            newState.number = response.data.number
-            return newState
-          })
-        }
-      } else {
-        const ids = 
-          recipeSearchResult.totalResults > (offset + NUMBER_ITEMS_AT_ONE_FETCH) ?
-          recipeIds!.slice(offset - 1, offset + NUMBER_ITEMS_AT_ONE_FETCH) :
-          recipeIds!.slice(offset - 1, recipeIds!.length)
-          try{
-            const allRes = await Promise.all(ids.map(async id=> {
-              const res = await spoonacularApiAxios.get(`/recipes/${id}/information`, 
-                {params: {
-                  includeNutrition: false
-                }}
-              )
-              return res.data as RecipeInfo
-            }))
-            const results = allRes.map(recipe => ({id: recipe.id, title: recipe.title, image: recipe.image}))
-            setStateResult(prev => {
-              const newState = {...prev}
-              newState.offset = offset
-              newState.results.push(...results)
-              newState.number = allRes.length
-              return newState
-            })
-          } catch {
-          }
-      }
-    }
-
-    if ((page * NUMBER_ITEMS_AT_ONE_FETCH) > stateRecipesResult.results.length) {
-      fetchSearchResult((stateRecipesResult.offset + NUMBER_ITEMS_AT_ONE_FETCH))
-    }
-  }, [page])
-
-  useEffect(() => {
-    const fetchSearchResult = async () => {
-      searchParams!.includeIngredients = mustIncludeIngredients.join()
-      try {
-        const response = await spoonacularApiAxios.get('/recipes/complexSearch', {params: searchParams})
-        setStateResult(response.data as RecipeSearchResult)
-      } catch {
-        const response = complexSearchData
-        setStateResult(response.data as RecipeSearchResult)  
-      }
-    }
-
-    if(searchParams === null) { return }
-
-    if (isInitialRender){
-      isInitialRender = false
-    } else {
-      fetchSearchResult()
-      setPage(1)
-    }
-  }, [mustIncludeIngredients])
-
-  useEffect(() => {
-    setMustIncludeIngredients([])
-    setStateResult(recipeSearchResult)
-    setPage(1)
-  }, [recipeSearchResult])
-
-  useEffect(()=> {
-    return () => {
-      isInitialRender = true
-    }
-  }, [])
+    initPagination()
+  }, [initSearchResult])
 
 	return (
 		<StyledExplore>
@@ -163,10 +58,10 @@ const Explore: NextPage<Props> = ({ user, fridge, recipeSearchResult, searchPara
       <StyledMainContent>
         {recipeIds ? 
           <></> : 
-          <h2>Found {recipeSearchResult.totalResults} Recipes by &quot;{router.query.keyword}&quot;</h2>
+          <h2>Found {initSearchResult.totalResults} Recipes by &quot;{router.query.keyword}&quot;</h2>
         }
         <DynamicRecipeSection 
-          recipesSearchResult={pickDisplayItems(page, stateRecipesResult.totalResults)} 
+          recipesSearchResult={getRecipesForDisplay()} 
           user={user}
           handleClickRecipe={handleClickRecipe}
         />
@@ -174,7 +69,7 @@ const Explore: NextPage<Props> = ({ user, fridge, recipeSearchResult, searchPara
           {page > 1 &&
             <button onClick={() => handlePagination(-1)}>Previous</button>
           }
-          {page * NUMBER_ITEMS_AT_ONE_FETCH < recipeSearchResult.totalResults && 
+          {page * NUMBER_ITEMS_AT_ONE_FETCH < initSearchResult.totalResults && 
             <button onClick={() => handlePagination(1)}>Next</button>
           }
         </StyledPagination>
@@ -184,7 +79,7 @@ const Explore: NextPage<Props> = ({ user, fridge, recipeSearchResult, searchPara
         <DynamicFridgeSection 
           fridge={fridge} 
           useAsFilter={true} 
-          setMustIncludeIngredients={setMustIncludeIngredients}
+          handleIngredientLimitation={handleIngredientLimitation}
           urlQuery={router.query}
         />
       </StyledSubContent>
@@ -198,11 +93,10 @@ const Explore: NextPage<Props> = ({ user, fridge, recipeSearchResult, searchPara
 export default Explore
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
-	const cookieData = req.headers.cookie ? cookie.parse(req.headers.cookie) : cookie.parse('')
-	const user: User | null = cookieData.user ? JSON.parse(cookieData.user) : null
+	const user: User | null = getUserFromCookie(req.headers.cookie)
 
   const fridge: Fridge = []
-  let recipeSearchResult: RecipeSearchResult
+  let initSearchResult: RecipeSearchResult
   let params: RecipeSearchParams | null = null
   let recipeIds: number[] | null = null
   let isFakeData: AlertInfo | null = null
@@ -219,11 +113,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     }
     try {
       const response = await spoonacularApiAxios.get('/recipes/complexSearch', {params: params})
-      recipeSearchResult = response.data as RecipeSearchResult
+      initSearchResult = response.data as RecipeSearchResult
     } catch {
       isFakeData = {isError: true, message:'Reached Api call Limitation. Displaying Fake Data'}
       console.error('fake recipes at explore')
-      recipeSearchResult = complexSearchData.data
+      initSearchResult = complexSearchData.data
     }
   } else if (query.favorite) {
     recipeIds = user!.favoriterecipe.map(id => Number(id))
@@ -237,7 +131,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
         )
         return response.data as RecipeMinimize
       }))
-      recipeSearchResult = {
+      initSearchResult = {
         results: allRes.map(recipe => ({id: recipe.id, title: recipe.title, image: recipe.image})),
         offset: 0,
         number: NUMBER_ITEMS_AT_ONE_FETCH,
@@ -246,7 +140,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     } catch {
       isFakeData = {isError: true, message:'Reached Api call Limitation. Displaying Fake Data'}
       console.error('fake recipes at explore')
-      recipeSearchResult = {
+      initSearchResult = {
         results: [],
         offset: 0,
         number: 0,
@@ -255,7 +149,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     }
   } else {
     console.error('ERROR: coming explore page without keyword nor history nor favorite')
-    recipeSearchResult = {
+    initSearchResult = {
       results: [],
       offset: 0,
       number: 0,
@@ -284,7 +178,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     props: {
       user,
       fridge,
-      recipeSearchResult,
+      initSearchResult,
       searchParams: params,
       recipeIds,
       isFakeData

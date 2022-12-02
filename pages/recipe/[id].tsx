@@ -1,7 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head';
 import Image from 'next/image'
-import * as cookie from 'cookie'
 import { useState } from 'react';
 
 import { Alert } from '../../components'
@@ -9,7 +8,7 @@ import { IngredientSection, HowToSection, AddListModal, ReduceFridgeModal, Feedb
 import FontAwesomeButton, { IconKind } from '../../components/FontAwesomeButton';
 import { StyledImage } from '../../styles'
 
-import { stringToDate } from '../../helpers/functions'
+import { stringToDate, getUserFromCookie, convertFetchDataToFridgeType } from '../../helpers/functions'
 import { User, RecipeInfo, Fridge, Ingredient, AlertInfo } from '../../helpers/typesLibrary'
 import appAxios, { spoonacularApiAxios } from '../../constants/axiosBase'
 import { recipeDetailsData } from '../../sampleApiData';
@@ -121,9 +120,9 @@ const Recipe: NextPage<Props> = ({user, fridge, recipeInfo, isFakeData }: Props)
 export default Recipe
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
-	const cookieData = req.headers.cookie ? cookie.parse(req.headers.cookie) : cookie.parse('')
-	const user: User | null = cookieData.user ? JSON.parse(cookieData.user) : null
-	const fridge: Fridge = []
+	const user: User | null = getUserFromCookie(req.headers.cookie)
+
+	let fridge: Fridge = []
 	let recipeInfo: RecipeInfo | null = null
 	let isFakeData: AlertInfo | null = null
 
@@ -152,17 +151,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 		const fridgeData = await appAxios.post('/api/fridge/show', {
       user_id: user.id
     })
-    Object.values(fridgeData.data).forEach((value: any) => {
-      fridge.push(
-        {
-          ingredient_api_id: value.ingredient_api_id,
-          name: value.name,
-          amount: value.amount,
-          unit: value.unit,
-          stored_at: stringToDate(value.stored_at).toString()
-        }
-      )
-    })
+		fridge = convertFetchDataToFridgeType(fridgeData.data)
 	}
 
 	return {

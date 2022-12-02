@@ -70,7 +70,7 @@ export default function ShoppingList( { user }: Props ) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-	const user: User = getUserFromCookie(req.headers.cookie!)
+	const user: User | null = getUserFromCookie(req.headers.cookie)
 
 	return { 
 		props: {

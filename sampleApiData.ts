@@ -41,7 +41,7 @@ export const complexSearchData = {
 	data: {
 		number: 6,
 		offset: 0,
-		totalResults: 20,
+		totalResults: 6,
 		results: [
 			{
 				id: 7765051,

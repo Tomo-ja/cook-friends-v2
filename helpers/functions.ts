@@ -1,4 +1,5 @@
 import * as cookie from 'cookie'
+
 import { Fridge, User } from './typesLibrary'
 
 const keywords = [
@@ -27,10 +28,12 @@ export const popupKeywords = (): string[] => {
 	return keywords
 }
 
-export const getUserFromCookie = (cookieInfo: string) => {
+export const getUserFromCookie = (cookieInfo: string | undefined): User | null => {
+	if (cookieInfo === undefined) return null
 	const cookieData = cookie.parse(cookieInfo)
-	const user: User = JSON.parse(cookieData.user)
+	if (!cookieData.user) return null
 
+	const user: User = JSON.parse(cookieData.user)
 	return user
 }
 
@@ -70,4 +73,14 @@ export const convertFetchDataToFridgeType = (fetchData: any): Fridge => {
 		)
 	})
 	return fridge
+}
+
+export const getExpiringFood = (fetchData: any): string[] => {
+	const expiringFood: string[] = []
+	Object.values(fetchData).forEach((value: any) => {
+		if (defineExpireDate(value.stored_at) > 5) {
+			expiringFood.push(value.name)
+		}
+	})
+	return expiringFood
 }
