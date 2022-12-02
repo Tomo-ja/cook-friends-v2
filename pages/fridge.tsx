@@ -1,15 +1,17 @@
-import { GetServerSideProps } from "next";
-import { useEffect, useState } from "react";
-import * as cookie from 'cookie'
+import { useEffect, useState } from "react"
+import { GetServerSideProps } from "next"
 
 import { FridgeSection, Alert} from '../components'
-import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton";
-import FridgeForm from "../components/Form/fridge";
+import FontAwesomeButton, { IconKind } from "../components/FontAwesomeButton"
+import FridgeForm from "../components/Form/FormInFridge"
 import { StyledContainer, StyledMainContent, StyledSubContent } from '../styles'
 
-import { Fridge, User, AlertInfo } from "../helpers/typesLibrary";
-import { stringToDate } from "../helpers";
-import appAxios from "../constants/axiosBase";
+import { Fridge, User, AlertInfo } from "../helpers/typesLibrary"
+import { convertFetchDataToFridgeType } from '../helpers/functions'
+import appAxios from "../constants/axiosBase"
+
+import { getUserFromCookie } from '../helpers/functions'
+
 
 type Props = {
 	user: User,
@@ -20,30 +22,19 @@ const FridgeList = ({ user }: Props) => {
 	const [fridgeUpdateTrigger, setFridgeUpdateTrigger] = useState(0)
 
 	const [displayedFridge, setDisplayedFridge] = useState<Fridge>([])
-	const [switchModal, setSwitchModal] = useState<boolean>(false);
+	const [switchModal, setSwitchModal] = useState<boolean>(false)
 	const [alert, setAlert] = useState<AlertInfo | null>(null)
 
 	const handleSwitch = () => {
-		setSwitchModal(!switchModal);
+		setSwitchModal(!switchModal)
 	}
 
 	useEffect(() => {
 		const fetchFridgeData = async () => {
-			const fridge: Fridge = []
-			const fridgeData = await appAxios.post('/api/fridge/show', {
+			const data = await appAxios.post('/api/fridge/show', {
 				user_id: user.id
 			})
-			Object.values(fridgeData.data).forEach((value: any) => {
-				fridge.push(
-					{
-						ingredient_api_id: value.ingredient_api_id,
-						name: value.name,
-						amount: value.amount,
-						unit: value.unit,
-						stored_at: stringToDate(value.stored_at).toString()
-					}
-				)
-			})
+			const fridge: Fridge = convertFetchDataToFridgeType(data.data)
 			setDisplayedFridge(fridge)
 		}
 
@@ -62,9 +53,8 @@ const FridgeList = ({ user }: Props) => {
 					isButtonSquare={true}
 					bcColor='black'
 				/>
-				<FridgeForm btn='fridge'
+				<FridgeForm
 					userId={user.id}
-					modal={switchModal}
 					setTrigger={setFridgeUpdateTrigger}
 					setAlert={setAlert}
 				/>
@@ -81,6 +71,7 @@ const FridgeList = ({ user }: Props) => {
 					handleClick={handleSwitch}
 					target={null}
 					iconKind={IconKind.Plus}
+					isButtonSquare={true}
 					displayOnlyMobile={true}
 				/>
 			</StyledMainContent>
@@ -88,14 +79,13 @@ const FridgeList = ({ user }: Props) => {
 				<Alert isError={alert.isError} message={alert.message} setAlert={setAlert} />
 			}
 		</StyledContainer>
-	);
+	)
 }
 
 export default FridgeList
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-	const cookieData = cookie.parse(req.headers.cookie!)
-	const user: User = JSON.parse(cookieData.user)
+	const user: User | null = getUserFromCookie(req.headers.cookie!)
 
 	return { 
 		props: {

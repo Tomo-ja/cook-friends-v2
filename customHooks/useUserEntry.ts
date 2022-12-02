@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import { setCookie } from "nookies";
@@ -9,7 +9,6 @@ import { AlertInfo } from "../helpers/typesLibrary";
 const useUserEntry = () => {
 	const [alert, setAlert] = useState<AlertInfo | null>(null)
 	const router = useRouter();
-
 
 	const isRequiredInfoFilled = (email: string, password: string, ...signIn: string[]): boolean => {
 		if (email.trim() === '') {

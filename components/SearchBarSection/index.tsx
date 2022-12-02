@@ -1,38 +1,28 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
-import { spoonacularApiAxios } from "../../constants/axiosBase";
-import SearchBarSection from "./searchBarSection.styles";
+
+import StyledSearchBarSection from "./searchBarSection.styles";
 import SearchBar from "./searchBar.styles";
 import SuggestBox from "./suggestBox.styles"; 
 
-interface props {
-	list?:(value :any)=>void
+import { getIngredientsAutoComplete } from '../../helpers/service'
+import { Food } from "../../helpers/typesLibrary";
+
+interface Props {
+	setSelectedFood?:(food: Food) => void
 	userId?: string | undefined;
 }
 
-const SearchSection = ({ list, userId}:props) => {
+const SearchBarSection = ({ setSelectedFood, userId }: Props) => {
 
 	const router = useRouter()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [prediction, setPrediction] = useState<{id: number, name: string}[]>([])
 
-	const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
-		spoonacularApiAxios
-			.get("/food/ingredients/autocomplete", {
-				params: {
-					number: 10,
-					query: e.currentTarget.value,
-					metaInformation: true,
-				},
-			})
-			.then((data) => {
-				const words: { id: number; name: string }[] = data.data;
-				setPrediction(words);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	};
+	const handleOnChange = async (e: React.FormEvent<HTMLInputElement>) => {
+		const possibleWords = await getIngredientsAutoComplete(e.currentTarget.value)
+		setPrediction(possibleWords)
+	}
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter') {
@@ -48,7 +38,7 @@ const SearchSection = ({ list, userId}:props) => {
 		setPrediction([]);
 		if (userId) {
 		inputRef.current!.value = ingredient;
-			return list?.({
+			return setSelectedFood?.({
 				user_id: userId,
 				ingredient_api_id: id,
 				name: ingredient,
@@ -63,7 +53,7 @@ const SearchSection = ({ list, userId}:props) => {
 	};
 
 return(
-	<SearchBarSection>
+	<StyledSearchBarSection>
 		<SearchBar 
 			placeholder='Search by Ingredients' 
 			onChange={handleOnChange} 
@@ -81,8 +71,8 @@ return(
 			</SuggestBox>
 
 		}
-	</SearchBarSection>
+	</StyledSearchBarSection>
 )
 }
 
-export default SearchSection
+export default SearchBarSection

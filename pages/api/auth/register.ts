@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import connectMongo from "../../../utils/connectMongo";
 import User from "../../../models/user";
-import { parseCookies } from "nookies";
+
 const bcrypt = require("bcrypt");
-interface newUser {}
+
 export default async function register(
 	req: NextApiRequest,
 	res: NextApiResponse<any>

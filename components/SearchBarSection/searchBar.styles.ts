@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const SearchBar = styled.input`
+const StyledSearchBar = styled.input`
 	all: unset;
 	
   width: 100%;
@@ -27,4 +27,4 @@ const SearchBar = styled.input`
 	}
 `
 
-export default SearchBar
+export default StyledSearchBar
