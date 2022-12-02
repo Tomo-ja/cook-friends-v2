@@ -1,10 +1,10 @@
-import { RecipeInfo } from "./helpers/typesLibrary"
+import { RecipeInfo, RecipeSearchResult } from "./helpers/typesLibrary"
 
-export const autoCompleteData = {
-	data: {
-
-	}
-
+export const errorSearchResultData: RecipeSearchResult = {
+	results: [],
+	offset: 0,
+	number: 0,
+	totalResults: 0
 }
 
 export const randomRecipeData = [

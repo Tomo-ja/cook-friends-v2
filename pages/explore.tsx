@@ -10,10 +10,10 @@ import { StyledMainContent, StyledSubContent} from '../styles'
 
 import useLimitedRecipesList from '../customHooks/useLimitedRecipesList';
 
-import { User, Fridge, RecipeSearchResult, RecipeSearchParams, RecipeInfo, RecipeMinimize, AlertInfo, } from '../helpers/typesLibrary'
-import { stringToDate, getUserFromCookie } from '../helpers/functions'
+import { User, Fridge, RecipeSearchResult, RecipeSearchParams, RecipeMinimize, AlertInfo, } from '../helpers/typesLibrary'
+import { getUserFromCookie, convertFetchDataToFridgeType } from '../helpers/functions'
 import appAxios, { spoonacularApiAxios } from '../constants/axiosBase';
-import { complexSearchData } from '../sampleApiData'
+import { complexSearchData, errorSearchResultData } from '../sampleApiData'
 
 const NUMBER_ITEMS_AT_ONE_FETCH = 3
 
@@ -32,7 +32,6 @@ const DynamicFridgeSection = dynamic(() => import('../components/FridgeSection/i
 const DynamicRecipeSection = dynamic(() => import('../components/RecipesSection/index'), 
 {ssr: true})
 
-let isInitialRender = true
 
 const Explore: NextPage<Props> = ({ user, fridge, initSearchResult, searchParams, recipeIds, isFakeData }: Props) => {
   const router = useRouter()
@@ -95,13 +94,11 @@ export default Explore
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
 	const user: User | null = getUserFromCookie(req.headers.cookie)
 
-  const fridge: Fridge = []
+  let fridge: Fridge = []
   let initSearchResult: RecipeSearchResult
   let params: RecipeSearchParams | null = null
   let recipeIds: number[] | null = null
   let isFakeData: AlertInfo | null = null
-
-  isInitialRender = true
 
   if(query.keyword) {
     params = {
@@ -116,7 +113,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
       initSearchResult = response.data as RecipeSearchResult
     } catch {
       isFakeData = {isError: true, message:'Reached Api call Limitation. Displaying Fake Data'}
-      console.error('fake recipes at explore')
       initSearchResult = complexSearchData.data
     }
   } else if (query.favorite) {
@@ -139,39 +135,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
       }
     } catch {
       isFakeData = {isError: true, message:'Reached Api call Limitation. Displaying Fake Data'}
-      console.error('fake recipes at explore')
-      initSearchResult = {
-        results: [],
-        offset: 0,
-        number: 0,
-        totalResults: 0
-      }
+      initSearchResult = errorSearchResultData
     }
   } else {
     console.error('ERROR: coming explore page without keyword nor history nor favorite')
-    initSearchResult = {
-      results: [],
-      offset: 0,
-      number: 0,
-      totalResults: 0
-    }
+    initSearchResult = errorSearchResultData
   }
 
   if (user) {
     const fridgeData = await appAxios.post('/api/fridge/show', {
       user_id: user.id
     })
-    Object.values(fridgeData.data).forEach((value: any) => {
-      fridge.push(
-        {
-          ingredient_api_id: value.ingredient_api_id,
-          name: value.name,
-          amount: value.amount,
-          unit: value.unit,
-          stored_at: stringToDate(value.stored_at).toString()
-        }
-      )
-    })
+    fridge = convertFetchDataToFridgeType(fridgeData.data)
   }
 
   return {
